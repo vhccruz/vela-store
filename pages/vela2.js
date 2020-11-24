@@ -9,11 +9,10 @@ import ModelSelector from '../components/vela2/ModelSelector'
 import ExtraSelector from '../components/vela2/ExtraSelector'
 import Tab from '../components/vela2/Tab'
 import withCheckoutLineItemsAdd from '../containers/withCheckoutLineItemsAdd'
-import withCheckoutId from '../containers/withCheckoutId'
 import withCheckout from '../containers/withCheckout'
 import ModelData from '../components/vela2/ModelData'
 
-const Vela2 = ({ checkout, checkoutId, checkoutLineItemsAdd }) => {
+const Vela2 = ({ checkout, checkoutLineItemsAdd, handleCheckoutCreation }) => {
   const [selectedModel, setSelectedModel] = useState({})
   const [selectedExtra, setSelectedExtra] = useState([])
   const [step, setStep] = useState(1);
@@ -26,8 +25,8 @@ const Vela2 = ({ checkout, checkoutId, checkoutLineItemsAdd }) => {
     if (step === 1) {
       setStep(2)
     }
-
     if (step === 2) {
+      const checkoutId = await handleCheckoutCreation()
       await checkoutLineItemsAdd({
         variables: {
           checkoutId,
@@ -112,6 +111,5 @@ const Vela2 = ({ checkout, checkoutId, checkoutLineItemsAdd }) => {
 
 export default compose(
   withCheckout,
-  withCheckoutLineItemsAdd,
-  withCheckoutId
+  withCheckoutLineItemsAdd
 )(Vela2)
